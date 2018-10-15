@@ -25,7 +25,7 @@ export default class App extends React.Component {
                 <Text style={styles.welcomeText}>Sign in to Known</Text>
                 <TextInput
                     style={styles.textInput}
-                    placeHolder="Enter your site url"
+                    placeholder="Enter your site url"
                     onChangeText={(site) => this.setState({site})}
                     value={this.state.site}
                     textContentType="URL"
@@ -33,14 +33,14 @@ export default class App extends React.Component {
                 />
                 <TextInput
                     style={styles.textInput}
-                    placeHolder="Username"
+                    placeholder="Username"
                     onChangeText={(username) => this.setState({username})}
                     value={this.state.username}
                     textContentType="username"
                 />
                 <TextInput
                     style={styles.textInput}
-                    placeHolder="API Key"
+                    placeholder="API Key"
                     onChangeText={(apikey) => this.setState({apikey})}
                     value={this.state.apikey}
                     textContentType="password"
