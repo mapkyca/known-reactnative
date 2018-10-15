@@ -30,6 +30,7 @@ export default class App extends React.Component {
                     value={this.state.site}
                     textContentType="URL"
                     keyboardType='url'
+                    autoFocus={true}
                 />
                 <TextInput
                     style={styles.textInput}
