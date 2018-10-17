@@ -1,9 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, AppRegistry, AsyncStorage, Image, TextInput, Button} from 'react-native';
 
+import API from './API';
 
-import Status from "./Status"
-import Home from "./Home"
 
 
 export default class App extends React.Component {
@@ -33,6 +32,21 @@ export default class App extends React.Component {
           this.setState({loaded: true});
           console.log('Settings loaded ' + JSON.stringify(this.state));
           
+          // See if we're logged in by attempting to load the current user
+          var api = new API(this.state.site, this.state.username, this.state.apikey);
+          
+          api.call('/currentUser/')
+            .then(function(value){
+                console.log('Current user returned: ' + JSON.stringify(value));
+        
+                if (typeof value.user !== 'undefined') {
+                    console.log('Found a user, we are logged in');
+                    
+                    this.setState({user: value.user});
+                    this.setState({loggedin: true});
+                }
+            }.bind(this));
+          
       }); 
       
       
@@ -48,49 +62,60 @@ export default class App extends React.Component {
                 </View>
         );
     } else {
-        return (
-                <View style={styles.container}>
-                    <Image source={this.state.welcomePic} style={styles.welcomePic} />
-                    <Text style={styles.welcomeText}>Sign in to Known</Text>
-                    <TextInput
-                        style={styles.textInput}
-                        placeHolder="Enter your site url"
-                        onChangeText={(site) => this.setState({site})}
-                        value={this.state.site}
-                        textContentType="URL"
-                        keyboardType='url'
-                    />
-                    <TextInput
-                        style={styles.textInput}
-                        placeHolder="Username"
-                        onChangeText={(username) => this.setState({username})}
-                        value={this.state.username}
-                        textContentType="username"
-                    />
-                    <TextInput
-                        style={styles.textInput}
-                        placeHolder="API Key"
-                        onChangeText={(apikey) => this.setState({apikey})}
-                        value={this.state.apikey}
-                        textContentType="password"
-                        secureTextEntry={true}
-                    />
-                    <Button
-                        style={styles.buttonInput}
-                        title="Log in..."
-                        onPress={() => {
+        if (!this.state.loggedin) {
+            return (
+                    <View style={styles.container}>
+                        <Image source={this.state.welcomePic} style={styles.welcomePic} />
+                        <Text style={styles.welcomeText}>Sign in to Known</Text>
+                        <TextInput
+                            style={styles.textInput}
+                            placeHolder="Enter your site url"
+                            onChangeText={(site) => this.setState({site})}
+                            value={this.state.site}
+                            textContentType="URL"
+                            keyboardType='url'
+                        />
+                        <TextInput
+                            style={styles.textInput}
+                            placeHolder="Username"
+                            onChangeText={(username) => this.setState({username})}
+                            value={this.state.username}
+                            textContentType="username"
+                        />
+                        <TextInput
+                            style={styles.textInput}
+                            placeHolder="API Key"
+                            onChangeText={(apikey) => this.setState({apikey})}
+                            value={this.state.apikey}
+                            textContentType="password"
+                            secureTextEntry={true}
+                        />
+                        <Button
+                            style={styles.buttonInput}
+                            title="Log in..."
+                            onPress={() => {
 
-                             // Save and log on
-                             var data = this.state;
-                             data.loaded = false;
-                             
-                             AsyncStorage.setItem('known-settings', JSON.stringify(data));
+                                 // Save and log on
+                                 var data = this.state;
+                                 data.loaded = false;
+                                 data.loggedin = false;
 
-                             console.log('Saving and logging in....' + JSON.stringify(data));
-                        }} 
-                    />
-                </View>
-        );
+                                 AsyncStorage.setItem('known-settings', JSON.stringify(data));
+
+                                 console.log('Saving and logging in....' + JSON.stringify(data));
+                                 
+                                 
+                                 
+                            }} 
+                        />
+                    </View>
+            );
+        } else {
+            // Logged in
+            return (<View>
+            <Text>Logged In</Text>
+            </View>);
+        }
     }
   }
 }
