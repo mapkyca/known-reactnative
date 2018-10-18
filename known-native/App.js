@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, ScrollView, AppRegistry, AsyncStorage, Image, TextInput, Button} from 'react-native';
 
 import API from './API';
+import Homepage from './Homepage';
 
 
 
@@ -128,11 +129,12 @@ export default class App extends React.Component {
             );
         } else {
             // Logged in
+            
+            var homepage = new Homepage(this.state.feed);
+            
             return (
                     <View style={styles.loggedinContainer}>
-                                        <ScrollView style={styles.homepageContainer}>
-                        
-                                        </ScrollView>
+                                        {homepage.render()}
                                         <View style={styles.homepageButtonbar}>
                                                 <Image source={this.state.welcomePic} style={styles.buttonBarProfileImg} />
                                         </View>
