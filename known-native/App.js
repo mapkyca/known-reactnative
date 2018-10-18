@@ -166,8 +166,8 @@ const styles = StyleSheet.create({
   homepageButtonbar: {
       height: 50,
       flexDirection: 'row',
-      backgroundColor: '#aaa',
-      padding: 2,
+      backgroundColor: '#000',
+      padding: 4,
   },
   
   buttonBarProfileImg: {

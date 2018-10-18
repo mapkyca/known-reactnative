@@ -25,23 +25,6 @@ const styles = StyleSheet.create({
       backgroundColor: '#ccc',
   },
   
-  homepageButtonbar: {
-      height: 50,
-      flexDirection: 'row',
-      backgroundColor: '#aaa',
-      padding: 2,
-  },
-  
-  buttonBarProfileImg: {
-      width: 45,
-      height: 45,
-      
-      borderColor: '#fff',
-      borderWidth: 2,
-      borderRadius: 22,
-      alignItems: 'center',
-      justifyContent: 'center',
-  },
   
   loggedinText: {
       color: '#333',
