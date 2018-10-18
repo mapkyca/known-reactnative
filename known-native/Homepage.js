@@ -4,9 +4,9 @@ import { StyleSheet, Text, View, ScrollView, Image, TextInput, Button} from 'rea
 import Status from './entities/Status';
 
 export default class Homepage {
-        
+                
         constructor(items) {
-            
+            this.items = items;
         }
         
         render() {
@@ -21,7 +21,7 @@ export default class Homepage {
 const styles = StyleSheet.create({
   
   homepageContainer : {
-      
+      padding: 5,
       backgroundColor: '#ccc',
   },
   
