@@ -38,7 +38,6 @@ export default class API {
         return fetch(this.baseurl + action, query)
                 .then((response) => response.json())
                 .then((responseJson) => {
-                    console.log("fetch: " + JSON.stringify(responseJson))
                     return responseJson;
                 })
                 .catch((error) => {

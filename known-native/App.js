@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, AppRegistry, AsyncStorage, Image, TextInput, Button} from 'react-native';
+import { StyleSheet, Text, View, ScrollView, AppRegistry, AsyncStorage, Image, TextInput, Button} from 'react-native';
 
 import API from './API';
 
@@ -29,24 +29,38 @@ export default class App extends React.Component {
           //this.state = JSON.parse(result);
           
           this.setState(JSON.parse(result)); 
-          this.setState({loaded: true});
+          this.setState({loaded: true}); 
           console.log('Settings loaded ' + JSON.stringify(this.state));
           
-          // See if we're logged in by attempting to load the current user
-          var api = new API(this.state.site, this.state.username, this.state.apikey);
-          
-          api.call('/currentUser/')
-            .then(function(value){
-                console.log('Current user returned: ' + JSON.stringify(value));
-        
-                if (typeof value.user !== 'undefined') {
-                    console.log('Found a user, we are logged in');
-                    
-                    this.setState({user: value.user});
-                    this.setState({loggedin: true});
-                }
-            }.bind(this));
-          
+          if ( (this.state.site !== 'https://') && (this.state.username !== '') && (this.state.apikey !== '') ) {
+              
+            // See if we're logged in by attempting to load the current user
+            var api = new API(this.state.site, this.state.username, this.state.apikey);
+
+            // Load current user and log them in
+            api.call('/currentUser/')
+              .then(function(value){
+
+                  if (typeof value.user !== 'undefined') {
+                      console.log("User " + value.user.displayName + ' found, we are logged in');
+                      
+                      this.setState({welcomePic: {uri: value.user.image.url}});
+                      this.setState({user: value.user});
+                      this.setState({loggedin: true});
+                  }
+              }.bind(this));
+              
+            // Load homepage
+            api.call('/')
+              .then(function(value){
+
+                  if (typeof value.items !== 'undefined') {
+                      console.log('Found items');
+
+                      this.setState({feed: value.items});
+                  }
+              }.bind(this));
+          }
       }); 
       
       
@@ -98,7 +112,9 @@ export default class App extends React.Component {
                                  // Save and log on
                                  var data = this.state;
                                  data.loaded = false;
-                                 data.loggedin = false;
+                                 data.user = false;
+                                 data.feed = false;
+                                 data.welcomePic = false;
 
                                  AsyncStorage.setItem('known-settings', JSON.stringify(data));
 
@@ -112,9 +128,16 @@ export default class App extends React.Component {
             );
         } else {
             // Logged in
-            return (<View>
-            <Text>Logged In</Text>
-            </View>);
+            return (
+                    <View style={styles.loggedinContainer}>
+                                        <ScrollView style={styles.homepageContainer}>
+                        
+                                        </ScrollView>
+                                        <View style={styles.homepageButtonbar}>
+                                                <Image source={this.state.welcomePic} style={styles.buttonBarProfileImg} />
+                                        </View>
+                    </View>
+            );
         }
     }
   }
@@ -128,6 +151,38 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   
+  loggedinContainer: {
+      flex: 1,
+      backgroundColor: '#fff',
+  },
+  
+  homepageContainer : {
+      
+      backgroundColor: '#ccc',
+  },
+  
+  homepageButtonbar: {
+      height: 50,
+      flexDirection: 'row',
+      backgroundColor: '#aaa',
+      padding: 2,
+  },
+  
+  buttonBarProfileImg: {
+      width: 45,
+      height: 45,
+      
+      borderColor: '#fff',
+      borderWidth: 2,
+      borderRadius: 22,
+      alignItems: 'center',
+      justifyContent: 'center',
+  },
+  
+  loggedinText: {
+      color: '#333',
+  },
+  
   welcomeText: {
       color: '#fff',
       marginBottom: 5,
@@ -136,7 +191,9 @@ const styles = StyleSheet.create({
   },
   
   welcomePic: {
-      marginBottom: 5
+      marginBottom: 5,
+      width: 100,
+      height: 100,
   },
   
   buttonInput: {
