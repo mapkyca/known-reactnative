@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
   },
 
   entityTime: {
-      textAlign: 'right'
+      textAlign: 'right',
+      color: '#888',
   }
 });
