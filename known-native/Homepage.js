@@ -9,19 +9,39 @@ export default class Homepage {
             this.items = items;
         }
         
+        renderFeed() {
+            
+            let feed = [];
+            
+            for (var i = 0; i < this.items.length; i++) {
+                
+                var item = null;
+                
+                switch (this.items[i].objectType) {
+                    case 'note': 
+                        item = new Status(this.items[i]);
+                        break;
+                }
+                
+                feed.push(item.render());
+            }
+            
+            return feed;
+        }
+        
         render() {
             return (
                     <ScrollView style={styles.homepageContainer}>
-                    <Text>testtest</Text>
+                    {this.renderFeed()}
                     </ScrollView>
-            )
+            );
         }
 }
 
 const styles = StyleSheet.create({
   
   homepageContainer : {
-      padding: 5,
+      padding: 10,
       backgroundColor: '#ccc',
   },
   
