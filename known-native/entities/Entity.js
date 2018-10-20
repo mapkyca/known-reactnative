@@ -10,7 +10,7 @@ export default class Entity {
     }
         
     render () {
-            console.log(this.item.actor.image.url);
+        
         return (
         <View key={this.item.id} style={styles.entityContainer}>
                    

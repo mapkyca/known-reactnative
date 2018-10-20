@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, TextInput, Button} from 'react-native';
 
 import Status from './entities/Status';
+import Post from './entities/Post';
 
 export default class Homepage {
                 
@@ -20,6 +21,9 @@ export default class Homepage {
                 switch (this.items[i].objectType) {
                     case 'note': 
                         item = new Status(this.items[i]);
+                        break;
+                    case 'article':
+                        item = new Post(this.items[i]);
                         break;
                 }
                 
