@@ -4,7 +4,7 @@ import HTML from 'react-native-render-html';
 
 import Entity from './Entity';
 
-export default class Post extends Entity {
+export default class Generic extends Entity {
         
         renderComponent() { 
             return (

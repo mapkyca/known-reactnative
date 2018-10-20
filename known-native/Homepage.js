@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, ScrollView, Image, TextInput, Button} from 'rea
 
 import Status from './entities/Status';
 import Post from './entities/Post';
+import Generic from './entities/Generic';
 
 export default class Homepage {
                 
@@ -25,6 +26,8 @@ export default class Homepage {
                     case 'article':
                         item = new Post(this.items[i]);
                         break;
+                    default:
+                        item = new Generic(this.item[i]);
                 }
                 
                 feed.push(item.render());
