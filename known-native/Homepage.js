@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, ScrollView, Image, TextInput, Button} from 'rea
 
 import Status from './entities/Status';
 import Post from './entities/Post';
+import Photo from './entities/Photo';
 import Generic from './entities/Generic';
 
 export default class Homepage {
@@ -25,6 +26,9 @@ export default class Homepage {
                         break;
                     case 'article':
                         item = new Post(this.items[i]);
+                        break;
+                    case 'image':
+                        item = new Photo(this.items[i]);
                         break;
                     default:
                         item = new Generic(this.item[i]);
