@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, ScrollView, Image, TextInput, Button} from 'rea
 import Status from './entities/Status';
 import Post from './entities/Post';
 import Photo from './entities/Photo';
+import Place from './entities/Place';
 import Generic from './entities/Generic';
 
 export default class Homepage {
@@ -30,8 +31,11 @@ export default class Homepage {
                     case 'image':
                         item = new Photo(this.items[i]);
                         break;
+                    case 'place':
+                        item = new Place(this.items[i]);
+                        break;
                     default:
-                        item = new Generic(this.item[i]);
+                        item = new Generic(this.items[i]);
                 }
                 
                 feed.push(item.render());
@@ -53,7 +57,7 @@ const styles = StyleSheet.create({
   
   homepageContainer : {
       padding: 10,
-      backgroundColor: '#ccc',
+      backgroundColor: '#fff',
   },
   
   

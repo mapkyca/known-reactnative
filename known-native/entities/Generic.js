@@ -7,10 +7,15 @@ import Entity from './Entity';
 export default class Generic extends Entity {
         
         renderComponent() { 
+            var formattedContent = this.item.formattedContent;
+            
+            if (formattedContent == '')
+                formattedContent = '<p></p>';
+            
             return (
                     <View>
                     <View style={styles.postTitleView}><Text style={styles.postTitle}>{this.item.displayName}</Text></View>
-                    <HTML html={this.item.formattedContent} />
+                    <HTML html={formattedContent} />
                     </View>
             );
         }
