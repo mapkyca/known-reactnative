@@ -32,7 +32,7 @@ export default class API {
             }, 
         };
         if (method == 'POST') {
-            query.params = params;
+            query.body = JSON.stringify(params);
         }
         
         return fetch(this.baseurl + action, query)

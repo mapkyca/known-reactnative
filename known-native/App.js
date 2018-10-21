@@ -138,8 +138,10 @@ export default class App extends React.Component {
         } else {
             // Logged in
             var page = null;
+            var api = new API(this.state.site, this.state.username, this.state.apikey);
+            
             switch (this.state.page) {
-                case 'newStatus': page = new NewStatus();
+                case 'newStatus': page = new NewStatus(api);
                 break;
                 
                 case 'profile': page = new Profile();
