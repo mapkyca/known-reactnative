@@ -1,9 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, AppRegistry, AsyncStorage, Image, TextInput, Button} from 'react-native';
+import { StyleSheet, Text, View, ScrollView, AppRegistry, AsyncStorage, Image, TextInput, Button, TouchableHighlight} from 'react-native';
+import { createStackNavigator } from 'react-navigation';
+import FontAwesome from 'react-native-fontawesome';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import API from './API';
 import Homepage from './Homepage';
-
+import NewStatus from './post/NewStatus';
+import Profile from './Profile';
 
 
 export default class App extends React.Component {
@@ -67,6 +71,9 @@ export default class App extends React.Component {
       
   }
   
+  switchPage(page) {
+      this.setState({page: page});
+  }
   
   render() {
       
@@ -116,6 +123,7 @@ export default class App extends React.Component {
                                  data.user = false;
                                  data.feed = false;
                                  data.welcomePic = false;
+                                 data.page = false;
 
                                  AsyncStorage.setItem('known-settings', JSON.stringify(data));
 
@@ -129,14 +137,64 @@ export default class App extends React.Component {
             );
         } else {
             // Logged in
+            var page = null;
+            switch (this.state.page) {
+                case 'newStatus': page = new NewStatus();
+                break;
+                
+                case 'profile': page = new Profile();
+                break;
             
-            var homepage = new Homepage(this.state.feed);
+                default: page = new Homepage(this.state.feed);
+            }
             
             return (
                     <View style={styles.loggedinContainer}>
-                                        {homepage.render()}
+                                        {page.render()}
                                         <View style={styles.homepageButtonbar}>
+                                            <TouchableHighlight onPress={() => this.setState({page: 'profile'})}> 
                                                 <Image source={this.state.welcomePic} style={styles.buttonBarProfileImg} />
+                                            </TouchableHighlight>
+                                            
+                                            <View style={styles.buttonCollection}>
+                                                    <TouchableHighlight onPress={() => this.setState({page: 'home'})}>
+                                                        <Text style={styles.button}>
+                                                            <Icon name='home' size={35} color="#fff"/>
+                                                        </Text>
+                                                    </TouchableHighlight>
+                                            </View>
+                                            
+                                            <View style={styles.buttonCollection}>
+                                                    <TouchableHighlight onPress={() => this.setState({page: 'newStatus'})}>
+                                                        <Text style={styles.button}>
+                                                            <Icon name='comment' size={35} color="#fff"/>
+                                                        </Text>
+                                                    </TouchableHighlight>
+                                            </View>
+                                            
+                                            <View style={styles.buttonCollection}>
+                                                    <TouchableHighlight onPress={() => this.setState({page: 'newPost'})}>
+                                                        <Text style={styles.button}>
+                                                            <Icon name='align-left' size={35} color="#fff"/>
+                                                        </Text>
+                                                    </TouchableHighlight>
+                                            </View>
+                                            
+                                            <View style={styles.buttonCollection}>
+                                                    <TouchableHighlight onPress={() => this.setState({page: 'newPhoto'})}>
+                                                        <Text style={styles.button}>
+                                                            <Icon name='image' size={35} color="#fff"/>
+                                                        </Text>
+                                                    </TouchableHighlight>
+                                            </View>
+                                            
+                                            <View style={styles.buttonCollection}>
+                                                    <TouchableHighlight onPress={() => this.setState({page: 'newLocation'})}>
+                                                        <Text style={styles.button}>
+                                                            <Icon name='map-marker' size={35} color="#fff"/>
+                                                        </Text>
+                                                    </TouchableHighlight>
+                                            </View>
                                         </View>
                     </View>
             );
@@ -179,6 +237,15 @@ const styles = StyleSheet.create({
       borderRadius: 22,
       alignItems: 'center',
       justifyContent: 'center',
+  },
+  
+  buttonCollection: {
+      marginLeft: 15,
+      paddingTop: 5,
+  },
+  
+  button: {
+      marginRight: 5,
   },
   
   loggedinText: {
