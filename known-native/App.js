@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, ScrollView, AppRegistry, AsyncStorage, Image, T
 import { createStackNavigator } from 'react-navigation';
 import FontAwesome from 'react-native-fontawesome';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import FlashMessage from 'react-native-flash-message';
 
 import API from './API';
 import Homepage from './Homepage';
@@ -26,6 +27,19 @@ export default class App extends React.Component {
     console.log("State " + JSON.stringify(this.state));
   }
   
+  updateFeed() {
+      // Load homepage
+            this.api.call('/')
+              .then(function(value){
+
+                  if (typeof value.items !== 'undefined') {
+                      console.log('Found items');
+
+                      this.setState({feed: value.items});
+                  }
+              }.bind(this));
+  }
+  
   componentDidMount() {
       console.log('Loading settings');
       
@@ -40,10 +54,10 @@ export default class App extends React.Component {
           if ( (this.state.site !== 'https://') && (this.state.username !== '') && (this.state.apikey !== '') ) {
               
             // See if we're logged in by attempting to load the current user
-            var api = new API(this.state.site, this.state.username, this.state.apikey);
+            this.api = new API(this.state.site, this.state.username, this.state.apikey);
 
             // Load current user and log them in
-            api.call('/currentUser/')
+            this.api.call('/currentUser/')
               .then(function(value){
 
                   if (typeof value.user !== 'undefined') {
@@ -55,16 +69,7 @@ export default class App extends React.Component {
                   }
               }.bind(this));
               
-            // Load homepage
-            api.call('/')
-              .then(function(value){
-
-                  if (typeof value.items !== 'undefined') {
-                      console.log('Found items');
-
-                      this.setState({feed: value.items});
-                  }
-              }.bind(this));
+              this.updateFeed();
           }
       }); 
       
@@ -141,7 +146,9 @@ export default class App extends React.Component {
             var api = new API(this.state.site, this.state.username, this.state.apikey);
             
             switch (this.state.page) {
-                case 'newStatus': page = new NewStatus(api);
+                case 'newStatus': 
+                    page = new NewStatus(api);
+                    page.setParent(this);
                 break;
                 
                 case 'profile': page = new Profile();
@@ -198,6 +205,7 @@ export default class App extends React.Component {
                                                     </TouchableHighlight>
                                             </View>
                                         </View>
+                                        <FlashMessage position="top" />
                     </View>
             );
         }

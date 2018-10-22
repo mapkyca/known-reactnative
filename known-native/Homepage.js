@@ -7,9 +7,12 @@ import Photo from './entities/Photo';
 import Place from './entities/Place';
 import Generic from './entities/Generic';
 
-export default class Homepage {
+import Page from './Page.js';
+
+export default class Homepage extends Page {
                 
         constructor(items) {
+            super();
             this.items = items;
         }
         
