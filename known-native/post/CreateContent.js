@@ -13,12 +13,12 @@ export default class CreateContent extends Page {
             this.editUrl = editUrl;
             
             
-        }
         
-        componentDidMount() {
             this.api.call(this.editUrl).then(function(value) {
                     
                this.syndication = value.formFields.syndication;
+               
+               console.log("Syndication: " + JSON.stringify(this.syndication));
                 
             }.bind(this));
             

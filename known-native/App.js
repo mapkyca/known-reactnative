@@ -8,6 +8,7 @@ import FlashMessage from 'react-native-flash-message';
 import API from './API';
 import Homepage from './Homepage';
 import NewStatus from './post/NewStatus';
+import NewPost from './post/NewPost';
 import Profile from './Profile';
 
 
@@ -148,6 +149,10 @@ export default class App extends React.Component {
             switch (this.state.page) {
                 case 'newStatus': 
                     page = new NewStatus(api);
+                    page.setParent(this);
+                break;
+                case 'newPost': 
+                    page = new NewPost(api);
                     page.setParent(this);
                 break;
                 
