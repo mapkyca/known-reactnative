@@ -6,6 +6,8 @@ export default class NewPost extends CreateContent {
         
         constructor(api, editUrl = '/status/edit/') {
             super(api, editUrl);
+            
+            this.page = 'newPage';
         }
         
         renderForm() {

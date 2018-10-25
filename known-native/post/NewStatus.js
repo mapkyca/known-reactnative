@@ -6,6 +6,8 @@ export default class NewStatus extends CreateContent {
         
         constructor(api, editUrl = '/status/edit/') {
             super(api, editUrl);
+            
+            this.page = 'newStatus';
         }
         
         renderForm() {
