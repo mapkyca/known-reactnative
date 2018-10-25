@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, TextInput, Button} from 'react-native';
 import { showMessage, hideMessage } from 'react-native-flash-message';
-import { CheckBox } from 'react-native-elements';
 import Page from '../Page';
+import Checkbox from '../components/Checkbox';
 
 export default class CreateContent extends Page {
        
@@ -10,7 +10,7 @@ export default class CreateContent extends Page {
             super();
             
             this.api = api;
-            this.formContents = {};
+            //this.parent.formContents = {};
             this.editUrl = editUrl;
             
             
@@ -19,9 +19,23 @@ export default class CreateContent extends Page {
         }
                 
         submitForm() {
-            console.log('Form is ' + this.editUrl + JSON.stringify(this.formContents) + '...posting');
             
-            this.api.call(this.editUrl, this.formContents, 'POST').then(function(value) {
+            console.log("Before post");
+            console.log(this.parent.formContents);
+            
+            if (typeof this.parent.syndicationSelected !== 'undefined' && this.parent.syndicationSelected !== null) {
+                
+                var syndication = [];
+                
+                for (var key in this.parent.syndicationSelected) {
+                    
+                    syndication.push(key);
+                }
+                
+                this.setForm({'syndication[]': syndication});
+            } 
+            
+            this.api.call(this.editUrl, this.parent.formContents, 'POST').then(function(value) {
                                 
                 showMessage({
                     message: 'Your post was sent!',
@@ -33,35 +47,37 @@ export default class CreateContent extends Page {
             
             this.parent.setState({page: 'home'});
             
-            // TODO: Reset form or reload main page
         }
         
         setForm(value) {
             
-            for (var key in value) this.formContents[key] = value[key];
+            //for (var key in value) this.parent.formContents[key] = value[key];
+            this.parent.formContents = Object.assign(this.parent.formContents, value);
             
-            console.log('Value is ' + JSON.stringify(this.formContents));
+            console.log('Value is ' + JSON.stringify(this.parent.formContents));
         }
         
         renderSyndication() {
             let items = [];
-            
-            if (typeof this.parent.syndication !== 'undefined') {
+            console.log('rendersyndication');
+            if (typeof this.parent.syndication !== 'undefined' && this.parent.syndication !== null) {
                 for (var i = 0; i < this.parent.syndication.length; i++) {
 
                     var item = null;
 
-                    var service = this.parent.syndication[i].name;
+                    var label = this.parent.syndication[i].name + ' (' + this.parent.syndication[i].service + ')';
                     
-                    item = (<View><CheckBox title={service} /></View>);
+                    item = new Checkbox(this, this.parent.syndication[i].username, label, this.parent.syndication[i].service);
 
-                    items.push(item);
+                    items.push(item.render());
                 }
             } else {
+                console.log('Loading synds');
                 this.api.call(this.editUrl).then(function(value) {
-
+console.log(JSON.stringify(value));
                    this.parent.syndication = value.formFields['syndication[]'];
-
+                   this.parent.syndicationSelected = {};
+                   
                    this.parent.setState({page: this.page});
                 }.bind(this));
             }
@@ -72,14 +88,17 @@ export default class CreateContent extends Page {
         render() {
             return (
                     <ScrollView style={styles.createContentForm}>
-                        <View style={styles.formContent}>
-                            {this.renderForm()}
-                            
+                        <View styl={styles.contentContainer} >
+                            <View style={styles.formContent}>
+                                {this.renderForm()}
+
+                            </View>
                             <View style={styles.syndicationFeed}>
                                 {this.renderSyndication()}
                             </View>
+                            <Button style={styles.submitButton} title="Post..." onPress={() => this.submitForm()} />
+                                
                         </View>
-                        <Button title="Post..." onPress={() => this.submitForm()} />
                     </ScrollView>
             )
         }
@@ -89,11 +108,18 @@ export default class CreateContent extends Page {
 const styles = StyleSheet.create({
    
         createContentForm: {
-            padding: 20,
-            paddingTop: 40
+            paddingTop: 20,
+            paddingLeft:20,
+            paddingRight:20,
+            paddingBottom: 100
         },
         
         formContent: {
             marginBottom: 30
+        },
+                
+        contentContainer: {
+            paddingBottom: 100,
+            marginBottom: 100
         }
 });

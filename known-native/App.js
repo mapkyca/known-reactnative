@@ -25,6 +25,8 @@ export default class App extends React.Component {
         loaded: false
     };
     
+    this.formContents = {};
+    
     console.log("State " + JSON.stringify(this.state));
   }
   
@@ -78,7 +80,9 @@ export default class App extends React.Component {
   }
   
   switchPage(page) {
-      this.setState({page: page});
+      this.setState(page);
+      this.syndication = null;
+      this.syndicationSelected  = {};
   }
   
   render() {
@@ -166,12 +170,12 @@ export default class App extends React.Component {
                     <View style={styles.loggedinContainer}>
                                         {page.render()}
                                         <View style={styles.homepageButtonbar}>
-                                            <TouchableHighlight onPress={() => this.setState({page: 'profile'})}> 
+                                            <TouchableHighlight onPress={() => this.switchPage({page: 'profile'})}> 
                                                 <Image source={this.state.welcomePic} style={styles.buttonBarProfileImg} />
                                             </TouchableHighlight>
                                             
                                             <View style={styles.buttonCollection}>
-                                                    <TouchableHighlight onPress={() => this.setState({page: 'home'})}>
+                                                    <TouchableHighlight onPress={() => this.switchPage({page: 'home'})}>
                                                         <Text style={styles.button}>
                                                             <Icon name='home' size={35} color="#fff"/>
                                                         </Text>
@@ -179,7 +183,7 @@ export default class App extends React.Component {
                                             </View>
                                             
                                             <View style={styles.buttonCollection}>
-                                                    <TouchableHighlight onPress={() => this.setState({page: 'newStatus'})}>
+                                                    <TouchableHighlight onPress={() => this.switchPage({page: 'newStatus'})}>
                                                         <Text style={styles.button}>
                                                             <Icon name='comment' size={35} color="#fff"/>
                                                         </Text>
@@ -187,7 +191,7 @@ export default class App extends React.Component {
                                             </View>
                                             
                                             <View style={styles.buttonCollection}>
-                                                    <TouchableHighlight onPress={() => this.setState({page: 'newPost'})}>
+                                                    <TouchableHighlight onPress={() => this.switchPage({page: 'newPost'})}>
                                                         <Text style={styles.button}>
                                                             <Icon name='align-left' size={35} color="#fff"/>
                                                         </Text>
@@ -195,7 +199,7 @@ export default class App extends React.Component {
                                             </View>
                                             
                                             <View style={styles.buttonCollection}>
-                                                    <TouchableHighlight onPress={() => this.setState({page: 'newPhoto'})}>
+                                                    <TouchableHighlight onPress={() => this.switchPage({page: 'newPhoto'})}>
                                                         <Text style={styles.button}>
                                                             <Icon name='image' size={35} color="#fff"/>
                                                         </Text>
@@ -203,7 +207,7 @@ export default class App extends React.Component {
                                             </View>
                                             
                                             <View style={styles.buttonCollection}>
-                                                    <TouchableHighlight onPress={() => this.setState({page: 'newLocation'})}>
+                                                    <TouchableHighlight onPress={() => this.switchPage({page: 'newLocation'})}>
                                                         <Text style={styles.button}>
                                                             <Icon name='map-marker' size={35} color="#fff"/>
                                                         </Text>

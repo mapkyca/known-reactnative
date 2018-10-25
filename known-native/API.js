@@ -35,9 +35,12 @@ export default class API {
             query.body = JSON.stringify(params);
         }
         
+        console.log("Query: ");console.log(query);
+        
         return fetch(this.baseurl + action, query)
                 .then((response) => response.json())
                 .then((responseJson) => {
+                    //console.log("Response: " + JSON.stringify(responseJson));
                     return responseJson;
                 })
                 .catch((error) => {
