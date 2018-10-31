@@ -11,6 +11,7 @@ import Homepage from './Homepage';
 import NewStatus from './post/NewStatus';
 import NewPost from './post/NewPost';
 import NewPhoto from './post/NewPhoto';
+import NewLocation from './post/NewLocation';
 import Profile from './Profile';
 
 
@@ -167,6 +168,11 @@ export default class App extends React.Component {
                     page.setParent(this);
                 break;
                 
+                case 'newLocation':
+                    page = new NewLocation(api);
+                    page.setParent(this);
+                break;
+                
                 case 'profile': page = new Profile();
                 break;
             
@@ -211,7 +217,7 @@ export default class App extends React.Component {
                                                             <Icon name='image' size={35} color="#fff"/>
                                                         </Text>
                                                     </TouchableHighlight>
-                                            </View>
+                                            </View> 
                                             
                                             <View style={styles.buttonCollection}>
                                                     <TouchableHighlight onPress={() => this.switchPage({page: 'newLocation'})}>

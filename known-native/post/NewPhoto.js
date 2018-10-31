@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, TextInput, Button} from 'react-native';
 import CreateContent from './CreateContent';
 
-export default class NewPost extends CreateContent {
+export default class NewPhoto extends CreateContent {
         
         constructor(api, editUrl = '/photo/edit/') {
             super(api, editUrl);

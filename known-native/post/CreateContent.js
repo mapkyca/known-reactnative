@@ -57,6 +57,11 @@ export default class CreateContent extends Page {
             console.log('Value is ' + JSON.stringify(this.parent.formContents));
         }
         
+        getForm(name) {
+            console.log("Retrieved form: " + this.parent.formContents[name]);
+            return this.parent.formContents[name];
+        }
+        
         renderSyndication() {
             let items = [];
             console.log('rendersyndication');
