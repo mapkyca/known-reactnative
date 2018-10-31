@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, TextInput, Button} from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, TextInput, Button, ActivityIndicator} from 'react-native';
 
 import MapView, { Marker } from 'react-native-maps';
 import CreateContent from './CreateContent';
@@ -63,8 +63,8 @@ export default class NewLocation extends CreateContent {
             /* todo: Rich text */
         
                 return (
-                    <View>
-                    
+                        <View style={{alignItems: 'center',justifyContent: 'center', flex: 1, marginTop: 50}}>
+                            <ActivityIndicator size="large" color="gray" />
                         </View>
                     );
             }

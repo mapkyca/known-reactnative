@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, TextInput, Button} from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, TextInput, Button, ActivityIndicator} from 'react-native';
 import { showMessage, hideMessage } from 'react-native-flash-message';
 import Page from '../Page';
 import Checkbox from '../components/Checkbox';
