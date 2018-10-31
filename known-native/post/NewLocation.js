@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, TextInput, Button} from 'react-native';
+import Geocoder from 'react-native-geocoding';
 
 import MapView, { Marker } from 'react-native-maps';
 import CreateContent from './CreateContent';
@@ -34,6 +35,28 @@ export default class NewLocation extends CreateContent {
                     this.setForm({lat: crd.latitude});
                     this.setForm({long: crd.longitude});
                     
+                    query = {
+                        method: 'GET'
+                    };
+                    
+                    
+                    fetch('https://nominatim.openstreetmap.org/reverse?lat=' + this.getForm('lat') + '&lon=' + this.getForm('long') + '&format=json&zoom=18', query)
+                    .then((response) => response.json())
+                    .then((responseJson) => {
+                        console.log(responseJson);
+                        this.setForm({address: responseJson.display_name});
+                        
+                        if (typeof responseJson.name !== 'undefined') {
+                            this.setForm({placename: responseJson.name});
+                        }
+                        
+                        this.parent.setState({page: this.page});
+                    })
+                    .catch((error) => {
+                        
+                        console.error(error)
+                    });
+                    
                     console.log("Loaded location");
                 });
             
@@ -42,22 +65,7 @@ export default class NewLocation extends CreateContent {
         
                 return (
                     <View>
-                    <Text style={{fontSize: 18}}>Checkin to a location</Text>
-                                      
-                    <Text style={{fontSize: 15, marginTop: 5}}>Address</Text>
-                    <TextInput
-                            style={styles.statusInput}
-                            placeHolder="What are your up to?"
-                            onChangeText={(address) => this.setForm({address: address})}
-                        />
-                        
-                    <Text style={{fontSize: 15, marginTop: 5}}>Description</Text>
-                           <TextInput
-                            style={styles.statusBody}
-                            onChangeText={(body) => this.setForm({body: body})}
-                                        multiline
-                        />
-                        <Text style={{fontSize: 10, marginTop: 5}}>HTML is ok</Text>
+                    
                         </View>
                     );
             }
@@ -75,12 +83,21 @@ export default class NewLocation extends CreateContent {
                     
                         <Marker coordinate={this.coord()}  title="You are here..." />
                     </MapView>
+                    
+                    <Text style={{fontSize: 15, marginTop: 5}}>Location</Text>
+                    <TextInput
+                            style={styles.statusInput}
+                            placeHolder="What are your up to?"
+                            onChangeText={(placename) => this.setForm({placename: placename})}
+                            value={this.getForm('placename')}
+                        />
                    
                     <Text style={{fontSize: 15, marginTop: 5}}>Address</Text>
                     <TextInput
                             style={styles.statusInput}
                             placeHolder="What are your up to?"
                             onChangeText={(address) => this.setForm({address: address})}
+                            value={this.getForm('address')}
                         />
                         
                     <Text style={{fontSize: 15, marginTop: 5}}>Description</Text>

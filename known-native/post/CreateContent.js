@@ -81,6 +81,10 @@ export default class CreateContent extends Page {
                 this.api.call(this.editUrl).then(function(value) {
 
                    this.parent.syndication = value.formFields['syndication[]'];
+                   
+                   if (typeof this.parent.syndication === 'undefined') {
+                       this.parent.syndication = []; 
+                   }
                    this.parent.syndicationSelected = {};
 
                     console.log(this.page);

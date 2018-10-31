@@ -44,7 +44,7 @@ export default class API {
                     return responseJson;
                 })
                 .catch((error) => {
-                    console.error(error)
+                    console.warn(error)
                 })
     }
 }
