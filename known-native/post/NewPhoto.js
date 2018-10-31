@@ -4,10 +4,10 @@ import CreateContent from './CreateContent';
 
 export default class NewPost extends CreateContent {
         
-        constructor(api, editUrl = '/entry/edit/') {
+        constructor(api, editUrl = '/photo/edit/') {
             super(api, editUrl);
             
-            this.page = 'newPost';
+            this.page = 'newPhoto';
         }
         
         renderForm() {

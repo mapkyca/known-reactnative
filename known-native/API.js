@@ -1,4 +1,4 @@
-
+import { FormData} from 'react-native';
 import './shim.js';
 const crypto = require('crypto-browserify');
  

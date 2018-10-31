@@ -1,14 +1,16 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, AppRegistry, AsyncStorage, Image, TextInput, Button, TouchableHighlight} from 'react-native';
+import { StyleSheet, Text, View, ScrollView, AppRegistry, AsyncStorage, Image, TextInput, Button, TouchableHighlight, FormData} from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import FontAwesome from 'react-native-fontawesome';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FlashMessage from 'react-native-flash-message';
+import ImagePicker from 'expo';
 
 import API from './API';
 import Homepage from './Homepage';
 import NewStatus from './post/NewStatus';
 import NewPost from './post/NewPost';
+import NewPhoto from './post/NewPhoto';
 import Profile from './Profile';
 
 
@@ -157,6 +159,11 @@ export default class App extends React.Component {
                 break;
                 case 'newPost': 
                     page = new NewPost(api);
+                    page.setParent(this);
+                break;
+                
+                case 'newPhoto': 
+                    page = new NewPhoto(api);
                     page.setParent(this);
                 break;
                 

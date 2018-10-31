@@ -74,10 +74,11 @@ export default class CreateContent extends Page {
             } else {
                 console.log('Loading synds');
                 this.api.call(this.editUrl).then(function(value) {
-console.log(JSON.stringify(value));
+
                    this.parent.syndication = value.formFields['syndication[]'];
                    this.parent.syndicationSelected = {};
-                   
+
+                    console.log(this.page);
                    this.parent.setState({page: this.page});
                 }.bind(this));
             }
