@@ -98,7 +98,7 @@ export default class CreateContent extends Page {
         render() {
             return (
                     <ScrollView style={styles.createContentForm}>
-                        <View styl={styles.contentContainer} >
+                        <View style={styles.contentContainer} >
                             <View style={styles.formContent}>
                                 {this.renderForm()}
 

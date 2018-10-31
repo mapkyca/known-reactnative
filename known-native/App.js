@@ -173,7 +173,9 @@ export default class App extends React.Component {
                     page.setParent(this);
                 break;
                 
-                case 'profile': page = new Profile();
+                case 'profile': 
+                    page = new Profile(api);
+                    page.setParent(this);
                 break;
             
                 default: page = new Homepage(this.state.feed);

@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, TextInput, Button} from 'react-native';
-import Geocoder from 'react-native-geocoding';
 
 import MapView, { Marker } from 'react-native-maps';
 import CreateContent from './CreateContent';
