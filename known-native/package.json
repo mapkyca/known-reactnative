@@ -40,6 +40,7 @@
     "react-native-elements": "^0.19.1",
     "react-native-flash-message": "^0.1.10",
     "react-native-fontawesome": "^5.7.0",
+    "react-native-geocoding": "^0.3.0",
     "react-native-level-fs": "^3.0.0",
     "react-native-maps": "^0.22.0",
     "react-native-os": "^1.0.1",
