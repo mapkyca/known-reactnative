@@ -1,5 +1,17 @@
 {
   "expo": {
-    "sdkVersion": "27.0.0"
+        "name": "Known Client",
+        "icon": "./gfx/known_big.png",
+        "description": "Client for your Known based site",
+        "version": "0.1",
+        "orientation": "portrait",
+        "ios": {
+            "bundleIdentifier": "com.marcuspovey.knownclient"
+        },
+        "android": {
+            "package": "com.marcuspovey.knownclient"
+        },
+                
+        "sdkVersion": "27.0.0"
   }
 }

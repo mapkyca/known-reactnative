@@ -75,8 +75,8 @@ export default class App extends React.Component {
                   }
               }.bind(this));
               
-              this.updateFeed();
-          }
+              this.updateFeed(); 
+          } 
       }); 
       
       
@@ -93,14 +93,14 @@ export default class App extends React.Component {
     if (!this.state.loaded) {
         return (
                 <View style={styles.container}>
-                    <Image source={this.state.welcomePic} style={styles.welcomePic} />
+                    <Image source={require('./gfx/known.png')} style={styles.welcomePic} />
                 </View>
         );
     } else {
         if (!this.state.loggedin) {
             return (
                     <View style={styles.container}>
-                        <Image source={this.state.welcomePic} style={styles.welcomePic} />
+                        <Image source={require('./gfx/known.png')} style={styles.welcomePic} />
                         <Text style={styles.welcomeText}>Sign in to Known</Text>
                         <TextInput
                             style={styles.textInput}
@@ -142,7 +142,7 @@ export default class App extends React.Component {
 
                                  console.log('Saving and logging in....' + JSON.stringify(data));
                                  
-                                 
+                                 this.componentDidMount(); 
                                  
                             }} 
                         />
