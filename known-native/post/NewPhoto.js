@@ -10,6 +10,18 @@ export default class NewPhoto extends CreateContent {
             
             this.page = 'newPhoto';
         }
+        
+        displayPhoto() {
+            if (typeof this.parent.photo !== 'undefined' && this.parent.photo !== null) {
+                return (
+                        <View>
+                            <Image style={{alignSelf: 'stretch', height: 200, marginTop: 10, marginBottom: 10}} source={{uri: this.parent.photo.uri}} />
+                        </View>
+                        );
+            } else {
+                
+            }
+        }
                 
         handleButtonPress = () => {
             
@@ -28,6 +40,7 @@ export default class NewPhoto extends CreateContent {
 
                             if (!result.cancelled) {
                                 this.parent.photo = result;
+                                this.parent.setState({page: this.page});
                             } 
                         });
                     });
@@ -81,12 +94,16 @@ export default class NewPhoto extends CreateContent {
                                         multiline
                         />
                         <Text style={{fontSize: 10, marginTop: 5}}>HTML is ok</Text>
-                                    
+                              
+                        {this.displayPhoto()}
+                              
                         <Button
                             style={styles.buttonInput}
                             title="Select Image..."
                             onPress={this.handleButtonPress} 
                         />
+                        
+                        
                         </View>
                     );
         }
