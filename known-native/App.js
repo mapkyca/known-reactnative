@@ -1,9 +1,18 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, AppRegistry, AsyncStorage, Image, TextInput, Button} from 'react-native';
+import { StyleSheet, Text, View, ScrollView, AppRegistry, AsyncStorage, Image, TextInput, Button, TouchableHighlight, FormData} from 'react-native';
+import { createStackNavigator } from 'react-navigation';
+import FontAwesome from 'react-native-fontawesome';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import FlashMessage from 'react-native-flash-message';
+import ImagePicker from 'expo';
 
 import API from './API';
 import Homepage from './Homepage';
-
+import NewStatus from './post/NewStatus';
+import NewPost from './post/NewPost';
+import NewPhoto from './post/NewPhoto';
+import NewLocation from './post/NewLocation';
+import Profile from './Profile';
 
 
 export default class App extends React.Component {
@@ -19,7 +28,22 @@ export default class App extends React.Component {
         loaded: false
     };
     
+    this.formContents = {};
+    
     console.log("State " + JSON.stringify(this.state));
+  }
+  
+  updateFeed() {
+      // Load homepage
+            this.api.call('/')
+              .then(function(value){
+
+                  if (typeof value.items !== 'undefined') {
+                      console.log('Found items');
+
+                      this.setState({feed: value.items});
+                  }
+              }.bind(this));
   }
   
   componentDidMount() {
@@ -36,10 +60,10 @@ export default class App extends React.Component {
           if ( (this.state.site !== 'https://') && (this.state.username !== '') && (this.state.apikey !== '') ) {
               
             // See if we're logged in by attempting to load the current user
-            var api = new API(this.state.site, this.state.username, this.state.apikey);
+            this.api = new API(this.state.site, this.state.username, this.state.apikey);
 
             // Load current user and log them in
-            api.call('/currentUser/')
+            this.api.call('/currentUser/')
               .then(function(value){
 
                   if (typeof value.user !== 'undefined') {
@@ -51,22 +75,18 @@ export default class App extends React.Component {
                   }
               }.bind(this));
               
-            // Load homepage
-            api.call('/')
-              .then(function(value){
-
-                  if (typeof value.items !== 'undefined') {
-                      console.log('Found items');
-
-                      this.setState({feed: value.items});
-                  }
-              }.bind(this));
+              this.updateFeed();
           }
       }); 
       
       
   }
   
+  switchPage(page) {
+      this.setState(page);
+      this.syndication = null;
+      this.syndicationSelected  = {};
+  }
   
   render() {
       
@@ -116,6 +136,7 @@ export default class App extends React.Component {
                                  data.user = false;
                                  data.feed = false;
                                  data.welcomePic = false;
+                                 data.page = false;
 
                                  AsyncStorage.setItem('known-settings', JSON.stringify(data));
 
@@ -129,15 +150,86 @@ export default class App extends React.Component {
             );
         } else {
             // Logged in
+            var page = null;
+            var api = new API(this.state.site, this.state.username, this.state.apikey);
             
-            var homepage = new Homepage(this.state.feed);
+            switch (this.state.page) {
+                case 'newStatus': 
+                    page = new NewStatus(api);
+                    page.setParent(this);
+                break;
+                case 'newPost': 
+                    page = new NewPost(api);
+                    page.setParent(this);
+                break;
+                
+                case 'newPhoto': 
+                    page = new NewPhoto(api);
+                    page.setParent(this);
+                break;
+                
+                case 'newLocation':
+                    page = new NewLocation(api);
+                    page.setParent(this);
+                break;
+                
+                case 'profile': 
+                    page = new Profile(api);
+                    page.setParent(this);
+                break;
+            
+                default: page = new Homepage(this.state.feed);
+            }
             
             return (
                     <View style={styles.loggedinContainer}>
-                                        {homepage.render()}
+                                        {page.render()}
                                         <View style={styles.homepageButtonbar}>
+                                            <TouchableHighlight onPress={() => this.switchPage({page: 'profile'})}> 
                                                 <Image source={this.state.welcomePic} style={styles.buttonBarProfileImg} />
+                                            </TouchableHighlight>
+                                            
+                                            <View style={styles.buttonCollection}>
+                                                    <TouchableHighlight onPress={() => this.switchPage({page: 'home'})}>
+                                                        <Text style={styles.button}>
+                                                            <Icon name='home' size={35} color="#fff"/>
+                                                        </Text>
+                                                    </TouchableHighlight>
+                                            </View>
+                                            
+                                            <View style={styles.buttonCollection}>
+                                                    <TouchableHighlight onPress={() => this.switchPage({page: 'newStatus'})}>
+                                                        <Text style={styles.button}>
+                                                            <Icon name='comment' size={35} color="#fff"/>
+                                                        </Text>
+                                                    </TouchableHighlight>
+                                            </View>
+                                            
+                                            <View style={styles.buttonCollection}>
+                                                    <TouchableHighlight onPress={() => this.switchPage({page: 'newPost'})}>
+                                                        <Text style={styles.button}>
+                                                            <Icon name='align-left' size={35} color="#fff"/>
+                                                        </Text>
+                                                    </TouchableHighlight>
+                                            </View>
+                                            
+                                            <View style={styles.buttonCollection}>
+                                                    <TouchableHighlight onPress={() => this.switchPage({page: 'newPhoto'})}>
+                                                        <Text style={styles.button}>
+                                                            <Icon name='image' size={35} color="#fff"/>
+                                                        </Text>
+                                                    </TouchableHighlight>
+                                            </View> 
+                                            
+                                            <View style={styles.buttonCollection}>
+                                                    <TouchableHighlight onPress={() => this.switchPage({page: 'newLocation'})}>
+                                                        <Text style={styles.button}>
+                                                            <Icon name='map-marker' size={35} color="#fff"/>
+                                                        </Text>
+                                                    </TouchableHighlight>
+                                            </View>
                                         </View>
+                                        <FlashMessage position="top" />
                     </View>
             );
         }
@@ -179,6 +271,15 @@ const styles = StyleSheet.create({
       borderRadius: 22,
       alignItems: 'center',
       justifyContent: 'center',
+  },
+  
+  buttonCollection: {
+      marginLeft: 15,
+      paddingTop: 5,
+  },
+  
+  button: {
+      marginRight: 5,
   },
   
   loggedinText: {
