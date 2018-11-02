@@ -80,15 +80,17 @@ export default class CreateContent extends Page {
                 console.log('Loading synds');
                 this.api.call(this.editUrl).then(function(value) {
 
-                   this.parent.syndication = value.formFields['syndication[]'];
-                   
-                   if (typeof this.parent.syndication === 'undefined') {
-                       this.parent.syndication = []; 
-                   }
-                   this.parent.syndicationSelected = {};
+                    if (typeof value.formFields['syndication[]'] !== 'undefined') {
+                        this.parent.syndication = value.formFields['syndication[]'];
+
+                        if (typeof this.parent.syndication === 'undefined') {
+                            this.parent.syndication = []; 
+                        }
+                    }
+                    this.parent.syndicationSelected = {};
 
                     console.log(this.page);
-                   this.parent.setState({page: this.page});
+                    this.parent.setState({page: this.page});
                 }.bind(this));
             }
             
