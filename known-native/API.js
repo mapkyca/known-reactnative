@@ -19,6 +19,12 @@ export default class API {
     
     call(action, params = {}, method = 'GET') {
         
+        console.log("Calling " + action);
+        
+        this.baseurl = this.baseurl.trim();
+        this.baseurl = this.baseurl.replace(/\/$/, "");
+        this.baseurl = this.baseurl.replace(/\s/, "");
+        
         var hmac = crypto.createHmac('sha256', this.apikey);
         hmac.update(action);
         
