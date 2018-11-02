@@ -17,12 +17,8 @@ export default class CreateContent extends Page {
             
             
         }
-                
-        submitForm() {
-            
-            console.log("Before post");
-            console.log(this.parent.formContents);
-            
+        
+        buildSyndication() {
             if (typeof this.parent.syndicationSelected !== 'undefined' && this.parent.syndicationSelected !== null) {
                 
                 var syndication = [];
@@ -34,6 +30,14 @@ export default class CreateContent extends Page {
                 
                 this.setForm({'syndication[]': syndication});
             } 
+        }
+        
+        submitForm() {
+            
+            console.log("Before post");
+            console.log(this.parent.formContents);
+            
+            this.buildSyndication(); 
             
             this.api.call(this.editUrl, this.parent.formContents, 'POST').then(function(value) {
                                 
@@ -41,7 +45,8 @@ export default class CreateContent extends Page {
                     message: 'Your post was sent!',
                     type: 'success'
                 });
-                                
+                     
+                this.parent.formContents = {};
                 this.parent.updateFeed();
             }.bind(this));
             

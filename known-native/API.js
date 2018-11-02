@@ -17,7 +17,7 @@ export default class API {
         
     }
     
-    call(action, params = {}, method = 'GET') {
+    call(action, params = {}, method = 'GET', content_type = 'application/json') {
         
         console.log("Calling " + action);
         
@@ -32,13 +32,16 @@ export default class API {
             method: method,
             headers: {
                 Accept: 'application/json',
-                'Content-Type': 'application/json',
+                'Content-Type': content_type,
                 'X-KNOWN-USERNAME': this.username,
                 'X-KNOWN-SIGNATURE': hmac.digest('base64')
             }, 
         };
         if (method == 'POST') {
-            query.body = JSON.stringify(params);
+            if (content_type == 'application/json')
+                query.body = JSON.stringify(params);
+            else
+                query.body = params;
         }
         
         console.log("Query: ");console.log(query);
