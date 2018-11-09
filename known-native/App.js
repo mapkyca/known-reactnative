@@ -43,6 +43,12 @@ export default class App extends React.Component {
 
                       this.setState({feed: value.items});
                   }
+                  
+                  if (typeof value.contentTypes !== 'undefined') {
+                      console.log('Found buttons');
+                      
+                      this.setState({contentTypes: value.contentTypes});
+                  }
               }.bind(this));
   }
   
@@ -80,6 +86,69 @@ export default class App extends React.Component {
       }); 
       
       
+  }
+  
+  drawButtons() {
+      
+      var buttons = [];
+      
+      for (var key in this.state.contentTypes) {
+          
+          switch (this.state.contentTypes[key].entity_class) {
+              
+                      case 'IdnoPlugins\\Status\\Status' :
+                          buttons.push(
+                                            <View key="status" style={styles.buttonCollection}>
+                                                    <TouchableHighlight onPress={() => this.switchPage({page: 'newStatus'})}>
+                                                        <Text style={styles.button}>
+                                                            <Icon name='comment' size={35} color="#fff"/>
+                                                        </Text>
+                                                    </TouchableHighlight>
+                                            </View>
+                                    );
+                          break;
+                      case 'IdnoPlugins\\Text\\Entry' :
+                          buttons.push(
+                                            <View key="post" style={styles.buttonCollection}>
+                                                    <TouchableHighlight onPress={() => this.switchPage({page: 'newPost'})}>
+                                                        <Text style={styles.button}>
+                                                            <Icon name='align-left' size={35} color="#fff"/>
+                                                        </Text>
+                                                    </TouchableHighlight>
+                                            </View>
+                                            
+                                  );
+                          break;
+                      case 'IdnoPlugins\\Photo\\Photo':
+                          buttons.push(
+                                            <View key="photo" style={styles.buttonCollection}>
+                                                    <TouchableHighlight onPress={() => this.switchPage({page: 'newPhoto'})}>
+                                                        <Text style={styles.button}>
+                                                            <Icon name='image' size={35} color="#fff"/>
+                                                        </Text>
+                                                    </TouchableHighlight>
+                                            </View> 
+                                  );
+                          break;
+                      case 'IdnoPlugins\\Checkin\\Checkin':
+                          buttons.push(
+                                            <View key="location" style={styles.buttonCollection}>
+                                                    <TouchableHighlight onPress={() => this.switchPage({page: 'newLocation'})}>
+                                                        <Text style={styles.button}>
+                                                            <Icon name='map-marker' size={35} color="#fff"/>
+                                                        </Text>
+                                                    </TouchableHighlight>
+                                            </View>
+                                  );
+                          break;
+                         
+              
+          }
+          
+      }
+      
+      
+      return buttons;
   }
   
   switchPage(page) {
@@ -137,6 +206,8 @@ export default class App extends React.Component {
                                  data.feed = false;
                                  data.welcomePic = false;
                                  data.page = false;
+                                 data.contentTypes = false;
+                                 
 
                                  AsyncStorage.setItem('known-settings', JSON.stringify(data));
 
@@ -197,37 +268,14 @@ export default class App extends React.Component {
                                                     </TouchableHighlight>
                                             </View>
                                             
-                                            <View style={styles.buttonCollection}>
-                                                    <TouchableHighlight onPress={() => this.switchPage({page: 'newStatus'})}>
-                                                        <Text style={styles.button}>
-                                                            <Icon name='comment' size={35} color="#fff"/>
-                                                        </Text>
-                                                    </TouchableHighlight>
-                                            </View>
+                                            {this.drawButtons()}
                                             
-                                            <View style={styles.buttonCollection}>
-                                                    <TouchableHighlight onPress={() => this.switchPage({page: 'newPost'})}>
-                                                        <Text style={styles.button}>
-                                                            <Icon name='align-left' size={35} color="#fff"/>
-                                                        </Text>
-                                                    </TouchableHighlight>
-                                            </View>
                                             
-                                            <View style={styles.buttonCollection}>
-                                                    <TouchableHighlight onPress={() => this.switchPage({page: 'newPhoto'})}>
-                                                        <Text style={styles.button}>
-                                                            <Icon name='image' size={35} color="#fff"/>
-                                                        </Text>
-                                                    </TouchableHighlight>
-                                            </View> 
                                             
-                                            <View style={styles.buttonCollection}>
-                                                    <TouchableHighlight onPress={() => this.switchPage({page: 'newLocation'})}>
-                                                        <Text style={styles.button}>
-                                                            <Icon name='map-marker' size={35} color="#fff"/>
-                                                        </Text>
-                                                    </TouchableHighlight>
-                                            </View>
+                                            
+                                            
+                                            
+                                            
                                         </View>
                                         <FlashMessage position="top" />
                     </View>
