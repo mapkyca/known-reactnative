@@ -270,12 +270,6 @@ export default class App extends React.Component {
                                             
                                             {this.drawButtons()}
                                             
-                                            
-                                            
-                                            
-                                            
-                                            
-                                            
                                         </View>
                                         <FlashMessage position="top" />
                     </View>
