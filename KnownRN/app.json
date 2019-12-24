@@ -1,0 +1,6 @@
+{
+  "name": "KnownRN",
+  "displayName": "Known",
+  "description": "Client for your Known based site",
+  "icon": "./assets/known_big.png"
+}
