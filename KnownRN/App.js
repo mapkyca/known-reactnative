@@ -75,12 +75,15 @@ export default class App extends React.Component {
                             this.setState({twofactor: ''})
                         }
                         
+                        // Got a token?
+                        if (value['api-token']!=='' && value['api-token']!==null) {
+                            console.log(value);
+                            console.log ('aPI token ' + value['api-token']);
+                            this.state.apikey = value['api-token'];
+                            
+                            this.saveSettings();
+                        }
                         
-                        
-                        
-                        
-                        
-
                     }. bind(this));
 
 
@@ -112,6 +115,24 @@ export default class App extends React.Component {
       }); 
       
       
+  }
+  
+  saveSettings() {
+       
+    // Save and log on
+    var data = this.state;
+    data.loaded = false;
+    data.user = false;
+    data.feed = false;
+    data.welcomePic = false;
+    data.page = false;
+    data.contentTypes = false;
+    data.twofa = false;
+
+
+    AsyncStorage.setItem('known-settings', JSON.stringify(data));
+
+    console.log('Saving and logging in....' + JSON.stringify(data));
   }
   
   
@@ -180,20 +201,7 @@ export default class App extends React.Component {
                             title="Log in..."
                             onPress={() => {
 
-                                 // Save and log on
-                                 var data = this.state;
-                                 data.loaded = false;
-                                 data.user = false;
-                                 data.feed = false;
-                                 data.welcomePic = false;
-                                 data.page = false;
-                                 data.contentTypes = false;
-                                 data.twofa = false;
-                                 
-
-                                 AsyncStorage.setItem('known-settings', JSON.stringify(data));
-
-                                 console.log('Saving and logging in....' + JSON.stringify(data));
+                                 this.saveSettings();
                                  
                                  this.componentDidMount(); 
                                  

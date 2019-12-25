@@ -87,6 +87,11 @@ export default class API {
               
             console.log(tokenresponseJson);
     
+            // See if we're already logged in
+            if (tokenresponseJson['api-token'] != '' && tokenresponseJson['api-token'] !== null) {
+                return tokenresponseJson;
+            }
+    
             var params = {
                 email: username, 
                 password: password,
