@@ -27,6 +27,8 @@ export default class App extends React.Component {
         site: 'https://',
         username: null,
         apikey: null,
+        password: null,
+        twofactor: null,
         welcomePic: require('./assets/known.png'),
         loggedin: false,
         loaded: false
@@ -50,19 +52,28 @@ export default class App extends React.Component {
           console.log('Settings loaded ' + JSON.stringify(this.state));
           
           
-          if ( (this.state.site !== 'https://') && (this.state.username !== '') && (this.state.password !== '') ) {
+          if ( (this.state.site !== 'https://') && (this.state.username !== '') && (this.state.password !== '') && (this.state.password !== null) ) {
               
               
             this.api = new API(this.state.site, this.state.username, this.state.apikey);
             
             // Log in and exchange password for apikey
-            this.api.getAPIToken(this.state.username, this.state.password)
+            this.api.getAPIToken(this.state.username, this.state.password, this.state.twofactor)
                     .then(function(value) {
 
                         console.log('Got from server: ');
                         console.log(value);
                         
-                        
+                        // See if this is a 2fa prompt? TODO
+                        if (value.email!==null && value.email!=='' && value.password!==null && value.password!=='') {
+                            
+                            
+                            this.setState({twofa: true});
+                            this.setState({twofactor: ''})
+                        } else {
+                            this.setState({twofa: false});
+                            this.setState({twofactor: ''})
+                        }
                         
                         
                         
@@ -92,6 +103,7 @@ export default class App extends React.Component {
                       this.setState({welcomePic: {uri: value.user.image.url}});
                       this.setState({user: value.user});
                       this.setState({loggedin: true});
+                      this.setState({twofa: false});
                   }
               }.bind(this));
               
@@ -113,6 +125,22 @@ export default class App extends React.Component {
         );
     } else {
         if (!this.state.loggedin) {
+            
+            console.log(this.state.twofa );
+            if (this.state.twofa == true) {
+                var twofa = (
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder="Two factor auth"
+                            placeholderTextColor = "#cccccc"
+                            onChangeText={(twofactor) => this.setState({twofactor})}
+                            textContentType="password"
+                            secureTextEntry={true}
+                            autoCapitalize = 'none'
+                        />
+                )
+            }
+            
             return (
                     <View style={styles.container}>
                         <Image source={require('./assets/known.png')} style={styles.welcomePic} />
@@ -146,6 +174,7 @@ export default class App extends React.Component {
                             secureTextEntry={true}
                             autoCapitalize = 'none'
                         />
+                        {twofa}
                         <Button
                             style={styles.buttonInput}
                             title="Log in..."
@@ -159,6 +188,7 @@ export default class App extends React.Component {
                                  data.welcomePic = false;
                                  data.page = false;
                                  data.contentTypes = false;
+                                 data.twofa = false;
                                  
 
                                  AsyncStorage.setItem('known-settings', JSON.stringify(data));

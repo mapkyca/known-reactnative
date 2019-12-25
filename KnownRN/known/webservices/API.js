@@ -88,12 +88,16 @@ export default class API {
             console.log(tokenresponseJson);
     
             var params = {
-                email: username,
+                email: username, 
                 password: password,
                 __bTk: tokenresponseJson.csrf[0].token,
                 __bTs: tokenresponseJson.csrf[0].time,
                 __bTa: tokenresponseJson.csrf[0].action
             };
+            
+            if (twofactor !== '' && twofactor !== null) {
+                params['2fa'] = twofactor;
+            }
             
             var formdata = new FormData();
             
