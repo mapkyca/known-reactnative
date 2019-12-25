@@ -12,10 +12,14 @@ import {
   StatusBar,
   Image,
   TextInput,
-  Button
+  Button,
+  TouchableHighlight
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import FlashMessage from 'react-native-flash-message';
 import API from './known/webservices/API.js';
+import Homepage from './known/pages/Homepage';
 
 
 export default class App extends React.Component {
@@ -35,6 +39,8 @@ export default class App extends React.Component {
     };
     
     this.formContents = {};
+    
+    Icon.loadFont();
     
     console.log("State " + JSON.stringify(this.state));
   }
@@ -110,11 +116,36 @@ export default class App extends React.Component {
                   }
               }.bind(this));
               
-              //this.updateFeed(); 
+              this.updateFeed(); 
           } 
       }); 
       
       
+  }
+  
+  updateFeed() {
+        // Load homepage
+        this.api.call('/')
+          .then(function(value){
+
+              if (typeof value.items !== 'undefined') {
+                  console.log('Found items');
+
+                  this.setState({feed: value.items});
+              }
+
+              if (typeof value.contentTypes !== 'undefined') {
+                  console.log('Found buttons');
+
+                  this.setState({contentTypes: value.contentTypes});
+              }
+          }.bind(this));
+  }
+  
+  switchPage(page) {
+      this.setState(page);
+      this.syndication = null;
+      this.syndicationSelected  = {};
   }
   
   saveSettings() {
@@ -133,6 +164,69 @@ export default class App extends React.Component {
     AsyncStorage.setItem('known-settings', JSON.stringify(data));
 
     console.log('Saving and logging in....' + JSON.stringify(data));
+  }
+  
+  drawButtons() {
+      
+      var buttons = [];
+      
+      for (var key in this.state.contentTypes) {
+          
+          switch (this.state.contentTypes[key].entity_class) {
+              
+                      case 'IdnoPlugins\\Status\\Status' :
+                          buttons.push(
+                                            <View key="status" style={styles.buttonCollection}>
+                                                    <TouchableHighlight onPress={() => this.switchPage({page: 'newStatus'})}>
+                                                        <Text style={styles.button}>
+                                                            <Icon name='comment' size={35} color="#fff"/>
+                                                        </Text>
+                                                    </TouchableHighlight>
+                                            </View>
+                                    );
+                          break;
+                      case 'IdnoPlugins\\Text\\Entry' :
+                          buttons.push(
+                                            <View key="post" style={styles.buttonCollection}>
+                                                    <TouchableHighlight onPress={() => this.switchPage({page: 'newPost'})}>
+                                                        <Text style={styles.button}>
+                                                            <Icon name='align-left' size={35} color="#fff"/>
+                                                        </Text>
+                                                    </TouchableHighlight>
+                                            </View>
+                                            
+                                  );
+                          break;
+                      case 'IdnoPlugins\\Photo\\Photo':
+                          buttons.push(
+                                            <View key="photo" style={styles.buttonCollection}>
+                                                    <TouchableHighlight onPress={() => this.switchPage({page: 'newPhoto'})}>
+                                                        <Text style={styles.button}>
+                                                            <Icon name='image' size={35} color="#fff"/>
+                                                        </Text>
+                                                    </TouchableHighlight>
+                                            </View> 
+                                  );
+                          break;
+                      case 'IdnoPlugins\\Checkin\\Checkin':
+                          buttons.push(
+                                            <View key="location" style={styles.buttonCollection}>
+                                                    <TouchableHighlight onPress={() => this.switchPage({page: 'newLocation'})}>
+                                                        <Text style={styles.button}>
+                                                            <Icon name='map-marker' size={35} color="#fff"/>
+                                                        </Text>
+                                                    </TouchableHighlight>
+                                            </View>
+                                  );
+                          break;
+                         
+              
+          }
+          
+      }
+      
+      
+      return buttons;
   }
   
   
