@@ -52,14 +52,32 @@ export default class App extends React.Component {
           
           if ( (this.state.site !== 'https://') && (this.state.username !== '') && (this.state.password !== '') ) {
               
-              // Log in and exchange password for apikey
               
-              
-              // Reset the state password so we can go on to the actual login
-              this.setState({password: ''});
+            this.api = new API(this.state.site, this.state.username, this.state.apikey);
+            
+            // Log in and exchange password for apikey
+            this.api.getAPIToken(this.state.username, this.state.password)
+                    .then(function(value) {
+
+                        console.log('Got from server: ');
+                        console.log(value);
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+
+                    }. bind(this));
+
+
+            // Reset the state password so we can go on to the actual login
+            this.setState({password: ''});
           }
           
-          if ( (this.state.site !== 'https://') && (this.state.username !== '') && (this.state.apikey !== '') ) {
+          if ( (this.state.site !== 'https://') && (this.state.username !== '') && (this.state.apikey !== '') && (this.state.apikey !== null) ) {
               
             // See if we're logged in by attempting to load the current user
             this.api = new API(this.state.site, this.state.username, this.state.apikey);
@@ -107,6 +125,7 @@ export default class App extends React.Component {
                             value={this.state.site}
                             textContentType="URL"
                             keyboardType='url'
+                            autoCapitalize = 'none'
                         />
                         <TextInput
                             style={styles.textInput}
@@ -115,6 +134,7 @@ export default class App extends React.Component {
                             onChangeText={(username) => this.setState({username})}
                             value={this.state.username}
                             textContentType="username"
+                            autoCapitalize = 'none'
                         />
                         <TextInput
                             style={styles.textInput}
@@ -124,6 +144,7 @@ export default class App extends React.Component {
                             value={this.state.password}
                             textContentType="password"
                             secureTextEntry={true}
+                            autoCapitalize = 'none'
                         />
                         <Button
                             style={styles.buttonInput}
