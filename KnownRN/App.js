@@ -202,7 +202,7 @@ export default class App extends React.Component {
                                             
                                   );
                           break;
-                      /*case 'IdnoPlugins\\Photo\\Photo':
+                      case 'IdnoPlugins\\Photo\\Photo':
                           buttons.push(
                                             <View key="photo" style={styles.buttonCollection}>
                                                     <TouchableHighlight onPress={() => this.switchPage({page: 'newPhoto'})}>
@@ -212,7 +212,7 @@ export default class App extends React.Component {
                                                     </TouchableHighlight>
                                             </View> 
                                   );
-                          break;*/
+                          break;
                       case 'IdnoPlugins\\Checkin\\Checkin':
                           buttons.push(
                                             <View key="location" style={styles.buttonCollection}>
