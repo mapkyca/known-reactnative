@@ -17,7 +17,7 @@ export default class NewPhoto extends CreateContent {
             if (typeof this.parent.photo !== 'undefined' && this.parent.photo !== null) {
                 return (
                         <View>
-                            <Image style={{height: 200, marginTop: 10, marginBottom: 10}} source={{uri: this.parent.photo.uri}} />
+                            <Image style={{height: 200, marginTop: 10, marginBottom: 10}} source={this.parent.photo} />
                         </View>
                         );
             } else {
@@ -166,7 +166,7 @@ export default class NewPhoto extends CreateContent {
                   // You can also display the image using data:
                   // const source = { uri: 'data:image/jpeg;base64,' + response.data };
 
-                    this.parent.photo =  response.data;//{ uri: response.uri };
+                    this.parent.photo = { uri: response.uri };//{ uri: 'data:image/jpeg;base64,' + response.data };//{ uri: response.uri };
                     this.parent.setState({page: this.page});
                   
                 }
