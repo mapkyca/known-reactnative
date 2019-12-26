@@ -20,6 +20,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import FlashMessage from 'react-native-flash-message';
 import API from './known/webservices/API.js';
 import Homepage from './known/pages/Homepage';
+import Profile from './known/pages/Profile';
+import NewStatus from './known/content/NewStatus';
+import NewPost from './known/content/NewPost';
+import NewPhoto from './known/content/NewPhoto';
+import NewLocation from './known/content/NewLocation';
 
 
 export default class App extends React.Component {
@@ -197,7 +202,7 @@ export default class App extends React.Component {
                                             
                                   );
                           break;
-                      case 'IdnoPlugins\\Photo\\Photo':
+                      /*case 'IdnoPlugins\\Photo\\Photo':
                           buttons.push(
                                             <View key="photo" style={styles.buttonCollection}>
                                                     <TouchableHighlight onPress={() => this.switchPage({page: 'newPhoto'})}>
@@ -207,7 +212,7 @@ export default class App extends React.Component {
                                                     </TouchableHighlight>
                                             </View> 
                                   );
-                          break;
+                          break;*/
                       case 'IdnoPlugins\\Checkin\\Checkin':
                           buttons.push(
                                             <View key="location" style={styles.buttonCollection}>
@@ -375,6 +380,7 @@ const styles = StyleSheet.create({
   loggedinContainer: {
       flex: 1,
       backgroundColor: '#fff',
+      paddingTop: 20
   },
   
   homepageContainer : {
@@ -383,7 +389,7 @@ const styles = StyleSheet.create({
   },
   
   homepageButtonbar: {
-      height: 50,
+      height: 70,
       flexDirection: 'row',
       backgroundColor: '#000',
       padding: 4,
