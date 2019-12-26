@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, TextInput, Button, CameraRoll} from 'react-native';
 import CreateContent from './CreateContent';
 import { showMessage, hideMessage } from 'react-native-flash-message';
+import ImagePicker from 'react-native-image-picker';
 //import { ImagePicker, Permissions } from 'expo';
 
 export default class NewPhoto extends CreateContent {
@@ -147,6 +148,30 @@ export default class NewPhoto extends CreateContent {
                         });
                 }); 
             }
+            
+        handlePhoto() {
+            ImagePicker.showImagePicker({
+                title: 'Select an image'
+            }, (response) => {
+                console.log('Response = ', response);
+
+                if (response.didCancel) {
+                  console.log('User cancelled image picker');
+                } else if (response.error) {
+                  console.log('ImagePicker Error: ', response.error);
+                } else if (response.customButton) {
+                  console.log('User tapped custom button: ', response.customButton);
+                } else {
+                    
+                  // You can also display the image using data:
+                  // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+                    this.parent.photo =  response.data;//{ uri: response.uri };
+                    this.parent.setState({page: this.page});
+                  
+                }
+              });
+        }
         
         renderForm() {
             /* todo: Rich text */
@@ -173,14 +198,8 @@ export default class NewPhoto extends CreateContent {
                         <Button
                             style={styles.buttonInput}
                             title="Select Image..."
-                            onPress={this.handleButtonPress} 
+                            onPress={this.handlePhoto} 
                         />
-                        <Button
-                            style={styles.buttonInput}
-                            title="Take a photo..."
-                            onPress={this.handleButtonPressPhoto} 
-                        />
-                        
                         
                         </View>
                     );
