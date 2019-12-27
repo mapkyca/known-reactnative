@@ -64,92 +64,10 @@ export default class NewPhoto extends CreateContent {
             
             this.parent.setState({page: 'home'});
             
-        }        
-                
-        handleButtonPress = () => {
+        }       
             
-            console.log("Camera roll filed...");
-            
-            
-            Permissions.askAsync(Permissions.CAMERA)
-                    .then(() => {
-                        Permissions.askAsync(Permissions.CAMERA_ROLL).then(() => {
-                           
-                            ImagePicker.launchImageLibraryAsync({
-                                allowsEditing: false,
-                                base64: true,
-                                exif: true
-                            }).then((result) => {
-
-                            console.log(result);
-
-                            if (!result.cancelled) {
-                                this.parent.photo = result;
-                                this.parent.setState({page: this.page});
-                                
-                            } 
-                        });
-                    });
-            
-            }); 
-            
-            
-            
-            /*ImagePicker.showImagePicker({
-                title: 'Select Photo',
-                storageOptions: {
-                    skipBackup: true,
-                    path: 'images'
-                }
-            }, (response) => {
-                console.log('Response = ', response);
-            });*/
-            
-            /*CameraRoll.getPhotos({
-                first: 20,
-                assetType: 'Photos',
-            })
-            .then(r => {
-               this.setForm({ 'photo[]': r.edges })
-            })
-            .catch((err) => {
-                                
-                console.log(err)
-                showMessage({
-                    message: 'There was a problem loading images',
-                    type: 'error'
-                });
-            });*/
-        }
-        
-        handleButtonPressPhoto = () => {
-            
-                console.log("Camera roll filed...");
-
-
-                Permissions.askAsync(Permissions.CAMERA)
-                        .then(() => {
-                            Permissions.askAsync(Permissions.CAMERA_ROLL).then(() => {
-
-                                ImagePicker.launchCameraAsync({
-                                    allowsEditing: false,
-                                    base64: true,
-                                    exif: true
-                                }).then((result) => {
-
-                                console.log(result);
-
-                                if (!result.cancelled) {
-                                    this.parent.photo = result;
-                                    this.parent.setState({page: this.page});
-
-                                } 
-                            });
-                        });
-                }); 
-            }
-            
-        handlePhoto() {
+        //handlePhoto() {
+        handlePhoto = () => {
             ImagePicker.showImagePicker({
                 title: 'Select an image'
             }, (response) => {
@@ -162,6 +80,7 @@ export default class NewPhoto extends CreateContent {
                 } else if (response.customButton) {
                   console.log('User tapped custom button: ', response.customButton);
                 } else {
+                    console.log('Loading image ' + response.uri);
                     
                   // You can also display the image using data:
                   // const source = { uri: 'data:image/jpeg;base64,' + response.data };
