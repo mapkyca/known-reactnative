@@ -44,10 +44,11 @@ export default class NewPhoto extends CreateContent {
                 formData.append(key, this.parent.formContents[key]);
             }
             
+            fileType2 = fileType.replace('jpg', 'jpeg');
             formData.append('photo[]', {
                 uri,
                 name: name,
-                type: 'image/'+fileType
+                type: 'image/'+fileType2
             });
             
             this.api.call(this.editUrl, formData, 'POST', 'multipart/form-data').then(function(value) {
