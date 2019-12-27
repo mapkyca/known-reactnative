@@ -51,7 +51,7 @@ export default class API {
                 query.body = params;
         }
         
-        console.log("Query: ");console.log(query);
+        console.log("Query to " + this.baseurl + action +": ");console.log(query);
         
         return fetch(this.baseurl + action, query)
                 .then((response) => response.json())
@@ -61,6 +61,7 @@ export default class API {
                 })
                 .catch((error) => {
                     console.warn(error)
+                    reject(error);
                 })
     }
     
