@@ -9,12 +9,13 @@ export default class Photo extends Entity {
         renderPhotos() {
             let photos = [];
             
-            for (var i = 0; i < this.item.attachments.length; i++) {
-               
-                photos.push(<Image key={this.item.attachments[i].url} source={{uri: this.item.attachments[i].url}} style={styles.photoImg} />);
-                    
+            if (this.item.attachments) {
+                for (var i = 0; i < this.item.attachments.length; i++) {
+
+                    photos.push(<Image key={this.item.attachments[i].url} source={{uri: this.item.attachments[i].url}} style={styles.photoImg} />);
+
+                }
             }
-            
             return photos;
         }
         
