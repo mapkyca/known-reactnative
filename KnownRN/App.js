@@ -313,6 +313,8 @@ export default class App extends React.Component {
             var page = null;
             var api = new API(this.state.site, this.state.username, this.state.apikey);
             
+            var containerStyles = styles.loggedinContainer;
+            
             switch (this.state.page) {
                 case 'newStatus': 
                     page = new NewStatus(api);
@@ -336,32 +338,34 @@ export default class App extends React.Component {
                 case 'profile': 
                     page = new Profile(api);
                     page.setParent(this);
+                    containerStyles = styles.profileContainer;
                 break;
             
                 default: page = new Homepage(this.state.feed);
             }
             
+            
             return (
-                    <View style={styles.loggedinContainer}>
-                                        {page.render()}
-                                        <View style={styles.homepageButtonbar}>
-                                            <TouchableHighlight onPress={() => this.switchPage({page: 'profile'})}> 
-                                                <Image source={this.state.welcomePic} style={styles.buttonBarProfileImg} />
-                                            </TouchableHighlight>
-                                            
-                                            <View style={styles.buttonCollection}>
-                                                    <TouchableHighlight onPress={() => this.switchPage({page: 'home'})}>
-                                                        <Text style={styles.button}>
-                                                            <Icon name='home' size={35} color="#fff"/>
-                                                        </Text>
-                                                    </TouchableHighlight>
-                                            </View>
-                                            
-                                            {this.drawButtons()}
-                                            
-                                        </View>
-                                        <FlashMessage position="top" />
+                <View style={containerStyles}>
+                    {page.render()}
+                    <View style={styles.homepageButtonbar}>
+                        <TouchableHighlight onPress={() => this.switchPage({page: 'profile'})}> 
+                            <Image source={this.state.welcomePic} style={styles.buttonBarProfileImg} />
+                        </TouchableHighlight>
+
+                        <View style={styles.buttonCollection}>
+                                <TouchableHighlight onPress={() => this.switchPage({page: 'home'})}>
+                                    <Text style={styles.button}>
+                                        <Icon name='home' size={35} color="#fff"/>
+                                    </Text>
+                                </TouchableHighlight>
+                        </View>
+
+                        {this.drawButtons()}
+
                     </View>
+                    <FlashMessage position="top" />
+                </View>
             );
         }
     }
@@ -380,6 +384,12 @@ const styles = StyleSheet.create({
   loggedinContainer: {
       flex: 1,
       backgroundColor: '#fff',
+      paddingTop: 20
+  },
+  
+  profileContainer: {
+      flex: 1,
+      backgroundColor: '#000',
       paddingTop: 20
   },
   
