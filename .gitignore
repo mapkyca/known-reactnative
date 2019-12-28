@@ -5,3 +5,5 @@
 *.log
 /data/*
 /known
+/KnownRN/nbproject/private/
+/known-native/nbproject/private/
